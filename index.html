@@ -3,96 +3,52 @@
 <title>Scholarship Monitoring</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:#eef1f6;--ink:#17233d;--mut:#5b6679;--acc:#23407a;--acc2:#1a3162;--line:#d3d9e4;--ok:#1d7a46;--bad:#b3341f;--warn:#a06a00;--gold:#c9962b}
-*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-h1,h2,.num{font-family:Georgia,"Times New Roman",serif}h2{font-size:18px;margin:0 0 12px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 24px;background:var(--ink);color:#fff;border-bottom:3px solid var(--gold)}
-.top b{font-family:Georgia,serif;font-size:18px;font-weight:600}.top button{margin-left:8px}
-main{max-width:1180px;margin:0 auto;padding:22px}
-.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px;margin-bottom:18px}
-label{display:block;font-size:13px;color:var(--mut)}input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
-input,select{width:100%;margin-top:3px}button{cursor:pointer;background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
-button:hover{background:var(--acc2)}button.alt{background:#fff;color:var(--acc)}button.alt:hover{background:#f1f4fa}
-:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;align-items:end}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.stat{border:1px solid var(--line);border-radius:6px;padding:12px 14px}.stat .num{font-size:34px;line-height:1.1;display:block}.stat span{color:var(--mut);font-size:13px}
-.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th{font-size:12px;color:var(--mut);font-weight:600}
-th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-tr.rc td:first-child{box-shadow:inset 4px 0 var(--ok)}tr.rd td:first-child{box-shadow:inset 4px 0 var(--bad)}tr.rp td:first-child{box-shadow:inset 4px 0 var(--gold)}
-td button{margin:2px 2px 0 0;padding:4px 8px;font-size:12px}
-.Compliant,.Verified,.Approved{color:var(--ok);font-weight:600}.Returned,.Held{color:var(--warn);font-weight:600}.deficient{color:var(--bad);font-weight:600}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);padding:11px 18px;border-radius:4px;color:#fff;background:var(--ok);display:none;max-width:90%;z-index:9}#toast.err{background:var(--bad)}
-dialog{max-width:640px;width:92%;border:1px solid var(--line);border-radius:6px}.hide{display:none!important}.mut{color:var(--mut)}
-.login{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
-.login aside{background:var(--ink);color:#fff;padding:60px 48px;display:flex;flex-direction:column;justify-content:center;border-right:4px solid var(--gold)}
-.login aside h1{font-size:42px;line-height:1.1;margin:0 0 16px;font-weight:600}.login aside p{color:#c4cde0;max-width:36ch;margin:0}
-.login .pane{display:flex;align-items:center;justify-content:center;padding:32px}.login .box{width:100%;max-width:380px}
-.tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--line)}.tabs button{background:none;color:var(--mut);border:0;border-bottom:3px solid transparent;border-radius:0;margin-bottom:-2px}
-.tabs button.on{color:var(--acc);border-bottom-color:var(--acc)}.box .f{margin-bottom:12px}.box>button,.box form>button{width:100%}
-.link{background:none;border:0;color:var(--acc);padding:0;font-weight:400;text-decoration:underline;font-size:13px}.link:hover{background:none}
-@media(max-width:760px){.login{grid-template-columns:1fr}.login aside{padding:28px;border-right:0;border-bottom:4px solid var(--gold)}.login aside h1{font-size:30px}}
+:root{--bg:#f5f6f2;--ink:#1c2826;--mut:#5d6b68;--acc:#1f5f5b;--line:#d5dbd6;--ok:#1d7a46;--bad:#b3341f;--warn:#9a6a00}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--acc);color:#fff}
+main{max-width:1100px;margin:0 auto;padding:20px}h1{font-size:18px;margin:0}h2{font-size:16px;margin:22px 0 8px}
+section{background:#fff;border:1px solid var(--line);padding:16px;margin-bottom:16px}
+label{display:block;font-size:13px;color:var(--mut)}input,select,button{font:inherit;padding:6px 8px;border:1px solid var(--line);background:#fff}
+input,select{width:100%}button{cursor:pointer;background:var(--acc);color:#fff;border-color:var(--acc)}button.alt{background:#fff;color:var(--acc)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e0a100;outline-offset:1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.stats div{border:1px solid var(--line);padding:10px}.stats b{font-size:24px;display:block}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td button{margin:1px;padding:3px 6px;font-size:12px}.Compliant,.Verified,.Approved{color:var(--ok);font-weight:600}.Returned,.Held{color:var(--warn);font-weight:600}
+.deficient{color:var(--bad);font-weight:600}#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);padding:10px 16px;color:#fff;background:var(--ok);display:none;max-width:90%}
+#toast.err{background:var(--bad)}dialog{max-width:620px;width:92%}.hide{display:none}
 </style></head><body>
-<div id="auth" class="login">
- <aside><h1>Scholarship Monitoring</h1><p>Submit semester grades, track verification, and see renewal decisions in one place.</p></aside>
- <div class="pane"><div class="box">
-  <form id="lf"><div class="tabs"><button type="button" data-m="in" class="on">Sign in</button><button type="button" data-m="up">Create account</button></div>
-   <div class="f"><label>Email<input id="em" type="email" autocomplete="username" required></label></div>
-   <div class="f"><label>Password<input id="pw" type="password" autocomplete="current-password" required></label></div>
-   <button id="lgo" type="submit">Sign in</button></form>
-  <div id="setup" class="hide"><h2>Connect to Supabase</h2><p class="mut">Paste the Project URL and anon key from Project Settings, then API. Never use the service-role key.</p>
-   <div class="f"><label>Project URL<input id="cu" placeholder="https://xxxx.supabase.co"></label></div>
-   <div class="f"><label>Anon public key<input id="ck"></label></div><button id="cs" type="button">Save connection</button></div>
-  <p style="margin-top:18px"><button class="link" id="cc" type="button">Change Supabase connection</button></p>
- </div></div>
-</div>
-<div id="shell" class="hide"><div class="top"><b>Scholarship Monitoring</b><div id="who"></div></div><main id="app"></main></div>
-<div id="toast" role="status"></div><dialog id="dlg"></dialog>
+<header><h1>Scholarship Monitoring</h1><div id="who"></div></header>
+<main>
+<section id="auth"><h2 style="margin-top:0">Sign in</h2><div class="grid">
+<div><label>Email<input id="em" type="email" autocomplete="username"></label></div>
+<div><label>Password<input id="pw" type="password" autocomplete="current-password"></label></div>
+<button id="in">Sign in</button><button id="up" class="alt">Create account</button></div></section>
+<div id="app" class="hide"></div>
+</main><div id="toast" role="status"></div><dialog id="dlg"></dialog>
 <script>
 const SUPABASE_URL='YOUR_SUPABASE_URL', SUPABASE_ANON_KEY='YOUR_ANON_KEY';
-let cfg;try{cfg=JSON.parse(localStorage.getItem('sb_cfg'))}catch(e){}
-cfg=cfg||{url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
-const ready=/^https:\/\/[^ ]+\.supabase\.co/.test(cfg.url)&&cfg.key.length>40;
-const db=ready?supabase.createClient(cfg.url,cfg.key):null;
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=t=>new Date(t).toLocaleString('en-PH',{timeZone:'Asia/Manila',hour12:false});
-let me,programs=[],profiles=[],assigns=[],subs=[],editId=null,T,mode='in';
-function toast(m,err){const t=$('#toast');t.textContent=m;t.className=err?'err':'';t.style.display='block';clearTimeout(T);T=setTimeout(()=>t.style.display='none',5000)}
-const nice=m=>/invalid login/i.test(m)?'Wrong email or password. If you have no account yet, choose Create account.':/already registered/i.test(m)?'That email already has an account. Sign in instead.':m;
-
-if(!ready){$('#lf').classList.add('hide');$('#setup').classList.remove('hide');$('#cc').classList.add('hide')}
-$('#cs').onclick=()=>{const u=$('#cu').value.trim().replace(/\/$/,''),k=$('#ck').value.trim();
- if(!/^https:\/\/[^ ]+\.supabase\.co$/.test(u)||k.length<40)return toast('Enter a valid Project URL and anon key.',1);
- localStorage.setItem('sb_cfg',JSON.stringify({url:u,key:k}));location.reload()};
-$('#cc').onclick=()=>{localStorage.removeItem('sb_cfg');location.reload()};
-document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
- $('#lgo').textContent=mode==='in'?'Sign in':'Create account';$('#pw').autocomplete=mode==='in'?'current-password':'new-password'});
-$('#lf').onsubmit=async e=>{e.preventDefault();const email=$('#em').value.trim(),password=$('#pw').value;
- if(mode==='in'){const{error}=await db.auth.signInWithPassword({email,password});return error?toast(nice(error.message),1):boot()}
- if(password.length<6)return toast('Password needs at least 6 characters.',1);
- const{data,error}=await db.auth.signUp({email,password});if(error)return toast(nice(error.message),1);
- data.session?boot():toast('Account created. Confirm the email first, or turn off "Confirm email" in Supabase Authentication.')};
-
+let me,programs=[],profiles=[],assigns=[],subs=[],editId=null,T;
+function toast(m,err){const t=$('#toast');t.textContent=m;t.className=err?'err':'';t.style.display='block';clearTimeout(T);T=setTimeout(()=>t.style.display='none',4500)}
 async function rpc(fn,args,ok){const{error}=await db.rpc(fn,args);if(error){toast(error.message,1);return false}toast(ok||'Saved');await load();return true}
-async function boot(){if(!db)return;const{data:{session}}=await db.auth.getSession();
- if(!session){$('#auth').classList.remove('hide');$('#shell').classList.add('hide');return}
- const{data,error}=await db.from('profiles').select('*').eq('auth_id',session.user.id).maybeSingle();
- if(error||!data){toast('No profile found. Run schema.sql in Supabase first, then sign up again.',1);await db.auth.signOut();return}
- me=data;$('#auth').classList.add('hide');$('#shell').classList.remove('hide');
- $('#who').innerHTML=esc(me.full_name||session.user.email)+' ('+esc(me.role)+') <button class="alt" id="out">Sign out</button>';
- $('#out').onclick=async()=>{await db.auth.signOut();location.reload()};await load()}
+async function boot(){const{data:{session}}=await db.auth.getSession();if(!session){$('#auth').classList.remove('hide');$('#app').classList.add('hide');$('#who').innerHTML='';return}
+ const{data}=await db.from('profiles').select('*').eq('auth_id',session.user.id).single();me=data;$('#auth').classList.add('hide');$('#app').classList.remove('hide');
+ $('#who').innerHTML=esc(me?.full_name||session.user.email)+' ('+esc(me?.role)+') <button class="alt" id="out">Sign out</button>';$('#out').onclick=async()=>{await db.auth.signOut();boot()};await load()}
+$('#in').onclick=async()=>{const{error}=await db.auth.signInWithPassword({email:$('#em').value,password:$('#pw').value});error?toast(error.message,1):boot()};
+$('#up').onclick=async()=>{const{error}=await db.auth.signUp({email:$('#em').value,password:$('#pw').value});error?toast(error.message,1):(toast('Account created. Sign in now.'),boot())};
 async function load(){const[p,pr,a,s]=await Promise.all([db.from('programs').select('*').order('id'),db.from('profiles').select('*').order('student_id'),db.from('assignments').select('*'),db.from('submissions').select('*').order('submitted_at')]);
- programs=p.data||[];profiles=pr.data||[];assigns=a.data||[];subs=s.data||[];me.role==='staff'?staffView():scholarView()}
+ programs=p.data||[];profiles=pr.data||[];assigns=a.data||[];subs=s.data||[];me?.role==='staff'?staffView():scholarView()}
 const prog=sid=>programs.find(p=>p.id===assigns.find(a=>a.scholar_id===sid)?.program_id)?.name||'Unassigned';
 const who=sid=>profiles.find(p=>p.id===sid)||{};
 const badge=(t,c)=>`<span class="${esc(c||t)}">${esc(t)}</span>`;
-const rc=s=>s.compliance==='Compliant'?'rc':s.compliance==='With Deficiency'?'rd':'rp';
-const cb=s=>badge(s.compliance,s.compliance==='With Deficiency'?'deficient':s.compliance);
 
-function scholarView(){const e=editId&&subs.find(x=>x.id===editId);
- $('#app').innerHTML=`<div class="card"><h2>${e?'Correct and resubmit '+esc(e.academic_year)+', semester '+e.semester:'Submit semester grades'}</h2>
- <p class="mut">Program: ${esc(prog(me.id))}. These figures are a summary only; the Registrar holds official grades.</p><div class="grid">
+function scholarView(){const mine=subs,e=editId&&mine.find(x=>x.id===editId);
+ $('#app').innerHTML=`<section><h2 style="margin-top:0">${e?'Correct and resubmit '+esc(e.academic_year)+' sem '+e.semester:'Submit semester grades'}</h2>
+ <p style="color:var(--mut)">Program: ${esc(prog(me.id))}. Your figures are a summary only; the Registrar holds official grades.</p><div class="grid">
  <label>Academic year<input id="ay" value="${e?esc(e.academic_year):'2026-2027'}" ${e?'disabled':''}></label>
  <label>Semester<select id="sm" ${e?'disabled':''}>${[1,2,3].map(n=>`<option ${e&&e.semester==n?'selected':''}>${n}</option>`)}</select></label>
  <label>GWA (1.00 to 5.00)<input id="gwa" type="number" step="0.01" value="${e?e.gwa:''}"></label>
@@ -101,32 +57,33 @@ function scholarView(){const e=editId&&subs.find(x=>x.id===editId);
  <label>Incomplete<input id="ic" type="number" min="0" step="1" value="${e?e.incomplete_count:0}"></label>
  <label>Dropped<input id="dr" type="number" min="0" step="1" value="${e?e.dropped_count:0}"></label>
  <label>Grade-document reference<input id="rf" value="${e?esc(e.evidence_ref):''}"></label>
- <button id="go">${e?'Resubmit':'Submit grades'}</button>${e?'<button id="cx" class="alt">Cancel</button>':''}</div></div>
- <div class="card"><h2>My submissions</h2><div class="wrap"><table><tr><th>Term</th><th>Submitted</th><th>Verification</th><th>Compliance</th><th>Renewal</th><th></th></tr>
- ${subs.map(s=>`<tr class="${rc(s)}"><td>${esc(s.academic_year)} / ${s.semester}</td><td>${fmt(s.submitted_at)}</td><td>${badge(s.verification_status,s.verification_status.split(' ')[0])}${s.return_reason?'<br>Reason: '+esc(s.return_reason):''}</td>
- <td>${cb(s)}${s.deficiency_reasons?'<br>'+esc(s.deficiency_reasons):''}</td><td>${badge(s.renewal_decision)}${s.decision_note?'<br>'+esc(s.decision_note):''}</td>
- <td>${s.verification_status==='Returned'?`<button data-fix="${s.id}">Correct</button> `:''}<button class="alt" data-h="${s.id}">History</button></td></tr>`).join('')||'<tr><td colspan="6">No submissions yet. Fill in the form above to send your first one.</td></tr>'}</table></div></div>`;
+ <button id="go">${e?'Resubmit':'Submit grades'}</button>${e?'<button id="cx" class="alt">Cancel</button>':''}</div></section>
+ <section><h2 style="margin-top:0">My submissions</h2><div class="wrap"><table><tr><th>Term</th><th>Submitted</th><th>Verification</th><th>Compliance</th><th>Renewal</th><th></th></tr>
+ ${mine.map(s=>`<tr><td>${esc(s.academic_year)} / ${s.semester}</td><td>${fmt(s.submitted_at)}</td><td>${badge(s.verification_status,s.verification_status.split(' ')[0])}${s.return_reason?'<br>Reason: '+esc(s.return_reason):''}</td>
+ <td>${badge(s.compliance,s.compliance==='With Deficiency'?'deficient':s.compliance)}${s.deficiency_reasons?'<br>'+esc(s.deficiency_reasons):''}</td><td>${badge(s.renewal_decision)}${s.decision_note?'<br>'+esc(s.decision_note):''}</td>
+ <td>${s.verification_status==='Returned'?`<button data-fix="${s.id}">Correct</button> `:''}<button class="alt" data-h="${s.id}">History</button></td></tr>`).join('')||'<tr><td colspan="6">No submissions yet.</td></tr>'}</table></div></section>`;
  const v=()=>[$('#gwa').value,$('#un').value,$('#fl').value,$('#ic').value,$('#dr').value].map(x=>x===''?null:Number(x));
- $('#go').onclick=()=>{const[g,u,f,i,d]=v(),rf=$('#rf').value;e?rpc('resubmit_grades',{p_id:e.id,p_gwa:g,p_units:u,p_failed:f,p_inc:i,p_drop:d,p_ref:rf},'Resubmitted. Pending verification.').then(k=>{if(k){editId=null;scholarView()}}):
+ $('#go').onclick=()=>{const[g,u,f,i,d]=v(),rf=$('#rf').value;e?rpc('resubmit_grades',{p_id:e.id,p_gwa:g,p_units:u,p_failed:f,p_inc:i,p_drop:d,p_ref:rf},'Resubmitted. Pending verification.').then(k=>{if(k)editId=null}):
  rpc('submit_grades',{p_ay:$('#ay').value,p_sem:Number($('#sm').value),p_gwa:g,p_units:u,p_failed:f,p_inc:i,p_drop:d,p_ref:rf},'Submitted.')};
  $('#cx')&&($('#cx').onclick=()=>{editId=null;scholarView()});
  document.querySelectorAll('[data-fix]').forEach(b=>b.onclick=()=>{editId=b.dataset.fix;scholarView()});bindHist()}
 
 let F={ay:'2026-2027',sm:'1',q:'',pg:'',cp:''};
 function staffView(){const inTerm=subs.filter(s=>s.academic_year===F.ay&&String(s.semester)===F.sm),cnt=f=>inTerm.filter(f).length;
- const rows=inTerm.filter(s=>{const w=who(s.scholar_id);return(!F.q||((w.student_id||'')+' '+(w.full_name||'')).toLowerCase().includes(F.q.toLowerCase()))&&(!F.pg||prog(s.scholar_id)===F.pg)&&(!F.cp||s.compliance===F.cp)});
- $('#app').innerHTML=`<div class="card"><div class="grid" style="max-width:340px"><label>Academic year<input id="fay" value="${esc(F.ay)}"></label><label>Semester<select id="fsm">${[1,2,3].map(n=>`<option ${F.sm==n?'selected':''}>${n}</option>`)}</select></label></div>
- <h2 style="margin-top:18px">Dashboard</h2><div class="stats"><div class="stat"><span class="num">${assigns.length}</span><span>Assigned scholars</span></div><div class="stat"><span class="num">${cnt(s=>s.verification_status==='Pending verification')}</span><span>Pending verification</span></div>
- <div class="stat"><span class="num" style="color:var(--ok)">${cnt(s=>s.compliance==='Compliant')}</span><span>Compliant</span></div><div class="stat"><span class="num" style="color:var(--bad)">${cnt(s=>s.compliance==='With Deficiency')}</span><span>With deficiency</span></div></div></div>
- <div class="card"><div class="grid"><label>Search ID or name<input id="fq" value="${esc(F.q)}"></label><label>Program<select id="fpg"><option value="">All</option>${programs.map(p=>`<option ${F.pg===p.name?'selected':''}>${esc(p.name)}</option>`)}</select></label>
+ const rows=inTerm.filter(s=>{const w=who(s.scholar_id);return(!F.q||(w.student_id+' '+w.full_name).toLowerCase().includes(F.q.toLowerCase()))&&(!F.pg||prog(s.scholar_id)===F.pg)&&(!F.cp||s.compliance===F.cp)});
+ const sch=profiles.filter(p=>p.role==='scholar');
+ $('#app').innerHTML=`<section><div class="grid"><label>Academic year<input id="fay" value="${esc(F.ay)}"></label><label>Semester<select id="fsm">${[1,2,3].map(n=>`<option ${F.sm==n?'selected':''}>${n}</option>`)}</select></label></div>
+ <h2>Dashboard</h2><div class="stats"><div><b>${assigns.length}</b>Assigned scholars</div><div><b>${cnt(s=>s.verification_status==='Pending verification')}</b>Pending verification</div>
+ <div><b>${cnt(s=>s.compliance==='Compliant')}</b>Compliant</div><div><b>${cnt(s=>s.compliance==='With Deficiency')}</b>With deficiency</div></div></section>
+ <section><div class="grid"><label>Search ID or name<input id="fq" value="${esc(F.q)}"></label><label>Program<select id="fpg"><option value="">All</option>${programs.map(p=>`<option ${F.pg===p.name?'selected':''}>${esc(p.name)}</option>`)}</select></label>
  <label>Compliance<select id="fcp"><option value="">All</option>${['Not evaluated','Compliant','With Deficiency'].map(c=>`<option ${F.cp===c?'selected':''}>${c}</option>`)}</select></label></div>
- <div class="wrap"><table style="margin-top:12px"><tr><th>ID</th><th>Name</th><th>Program</th><th>GWA</th><th>Units</th><th>F/INC/D</th><th>Evidence</th><th>Verification</th><th>Compliance</th><th>Renewal</th><th>Actions</th></tr>
- ${rows.map(s=>{const w=who(s.scholar_id);return`<tr class="${rc(s)}"><td>${esc(w.student_id)}</td><td>${esc(w.full_name)}</td><td>${esc(prog(s.scholar_id))}</td><td>${s.gwa}</td><td>${s.units}</td><td>${s.failed_count}/${s.incomplete_count}/${s.dropped_count}</td><td>${esc(s.evidence_ref)}<br><small class="mut">${fmt(s.submitted_at)}</small></td>
- <td>${badge(s.verification_status,s.verification_status.split(' ')[0])}${s.return_reason?'<br><small>'+esc(s.return_reason)+'</small>':''}</td><td>${cb(s)}</td><td>${badge(s.renewal_decision)}</td>
- <td><button data-v="${s.id}">Verify</button><button class="alt" data-r="${s.id}">Return</button><button data-e="${s.id}">Evaluate</button><button data-a="${s.id}">Approve</button><button class="alt" data-hd="${s.id}">Hold</button><button class="alt" data-c="${s.id}">Checks</button><button class="alt" data-h="${s.id}">History</button></td></tr>`}).join('')||'<tr><td colspan="11">No submissions match. Change the term or filters.</td></tr>'}</table></div></div>
- <div class="card"><h2>Register or assign a scholar</h2><div class="grid"><label>Full name<input id="rn"></label><label>Student ID<input id="ri"></label><label>Email (links on sign-up)<input id="re" type="email"></label>
+ <div class="wrap"><table style="margin-top:10px"><tr><th>ID</th><th>Name</th><th>Program</th><th>GWA</th><th>Units</th><th>F/INC/D</th><th>Evidence</th><th>Verification</th><th>Compliance</th><th>Renewal</th><th>Actions</th></tr>
+ ${rows.map(s=>{const w=who(s.scholar_id);return`<tr><td>${esc(w.student_id)}</td><td>${esc(w.full_name)}</td><td>${esc(prog(s.scholar_id))}</td><td>${s.gwa}</td><td>${s.units}</td><td>${s.failed_count}/${s.incomplete_count}/${s.dropped_count}</td><td>${esc(s.evidence_ref)}<br><small>${fmt(s.submitted_at)}</small></td>
+ <td>${badge(s.verification_status,s.verification_status.split(' ')[0])}${s.return_reason?'<br><small>'+esc(s.return_reason)+'</small>':''}</td><td>${badge(s.compliance,s.compliance==='With Deficiency'?'deficient':s.compliance)}</td><td>${badge(s.renewal_decision)}</td>
+ <td><button data-v="${s.id}">Verify</button><button data-r="${s.id}">Return</button><button data-e="${s.id}">Evaluate</button><button data-a="${s.id}">Approve</button><button data-hd="${s.id}">Hold</button><button class="alt" data-c="${s.id}">Checks</button><button class="alt" data-h="${s.id}">History</button></td></tr>`}).join('')||'<tr><td colspan="11">No matching submissions.</td></tr>'}</table></div></section>
+ <section><h2 style="margin-top:0">Register or assign a scholar</h2><div class="grid"><label>Full name<input id="rn"></label><label>Student ID<input id="ri"></label><label>Email (links on sign-up)<input id="re" type="email"></label>
  <label>Program<select id="rp">${programs.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`)}</select></label><button id="rg">Register scholar</button></div>
- <p class="mut">To change a scholar's program, register the same student ID again.</p></div>`;
+ <p style="color:var(--mut)">Registered: ${sch.length}. To change a program, register the same student ID again.</p></section>`;
  const bind=(k,f)=>$(k).onchange=()=>{f();staffView()};bind('#fay',()=>F.ay=$('#fay').value);bind('#fsm',()=>F.sm=$('#fsm').value);bind('#fq',()=>F.q=$('#fq').value);bind('#fpg',()=>F.pg=$('#fpg').value);bind('#fcp',()=>F.cp=$('#fcp').value);
  const on=(a,f)=>document.querySelectorAll(`[data-${a}]`).forEach(b=>b.onclick=()=>f(b.dataset[a]));
  on('v',id=>rpc('verify_submission',{p_id:id,p_status:'Verified',p_reason:null},'Verified.'));
