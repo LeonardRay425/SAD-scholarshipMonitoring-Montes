@@ -1,0 +1,9 @@
+# SAD Exam Section A: Scholarship Monitoring
+1. Create a Supabase project. In Authentication settings, turn off "Confirm email" for the exam.
+2. Run `schema.sql` in the SQL Editor (tables, RLS, RPC functions, policies, seed A01 to A06).
+3. In `index.html` set `SUPABASE_URL` and `SUPABASE_ANON_KEY` (anon key only; never the service-role key).
+4. Serve the folder (`python -m http.server 8000`) and open http://localhost:8000.
+5. Sign up `staff@exam.test`, then run `update profiles set role='staff' where email='staff@exam.test';`.
+   Sign up `a01@exam.test` / `a02@exam.test` to log in as scholars A01 / A02 (linked by email). Give passwords to the instructor privately.
+Access is enforced by RLS (read) and security-definer RPCs (all workflow writes). Scholars have no direct write access.
+Known defects: fill in after testing. Resubmission keeps the original submitted_at for deadline checks.
